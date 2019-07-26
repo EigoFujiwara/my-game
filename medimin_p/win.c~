@@ -1,0 +1,22 @@
+#include "headers.h"
+int games;
+int wii;
+int atack;
+int change;
+int finish=0;
+SDL_Surface *mWIN;
+SDL_Surface *image[img_max];
+
+
+void startUp()
+{
+if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) < 0)
+SDL_Quit();
+
+mWIN=SDL_SetVideoMode(1680,960,32,SDL_SWSURFACE);
+SDL_WM_SetCaption("actiongame",NULL);
+games=0;
+imageLoad();
+//LoadSound();
+}
+
