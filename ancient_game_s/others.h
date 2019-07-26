@@ -1,0 +1,163 @@
+extern int games;
+extern SDL_Surface *mWIN;
+extern int wii;
+extern int atack;
+extern int change;
+extern int bullet;
+extern int finish;
+extern SDL_Thread *thr;
+extern wiimote_t wiimote;// Wiiリモコンの状態格納用 
+
+void startUp();
+int quits();
+int thread(void* args);
+void frames();
+void clear();
+//効果音
+//void LoadSound();
+//void playSE(int num);
+//画像読み込み
+void imageLoad();
+//背景表示関数
+void backGraund();
+void backGraund2();
+void backGraund3();
+void backGraund4();
+//マップチップ表示関数
+void mapSrc(Sint16 num, Sint16 poX, Sint16 poY);
+void mapDrw();
+//ステージ移動の時使う
+void resets();
+void startGame();
+void continue_game();
+//時期の関数
+void me_src(Sint16 posX, Sint16 posY);
+void me_move();
+//メインに組み込む最終的な自機関数
+void me_main();
+//トラップ関数
+void trap_srcY(Sint16 posX, Sint16 posY);
+void trap_srcX(Sint16 posX, Sint16 posY);
+void trap_init(Sint16 posX,Sint16 posY);
+void trap_main_y();
+void trap_main_x();
+//ゲームオーバーの時
+void gameover();
+void backtitle();
+//文字描画関数
+void textInit();
+void textDrw(Sint16 num, Sint16 poX, Sint16 poY);
+//メインに組み込む最終的なトラップ関数
+void trap_X(Sint16 posX, Sint16 posY);
+void trap_Y(Sint16 posX, Sint16 posY);
+//色々な当たり判定
+void hitChek_me_t(int a);
+void hitChek_me_f();
+int hitChek_enemy_f();
+int hitChek_me_e(Sint16 posX, Sint16 posY, double poX, double poY);
+int hitChek_me_b(Sint16 posX, Sint16 posY, double poX, double poY);
+//自機武器の関数
+void weapon_src(Sint16 posX, Sint16 posY);
+int hitChek_mew_e(Sint16 posX, Sint16 posY, double poX, double poY);
+int hitChek_mew_o(Sint16 posX, Sint16 posY, Sint16 poX, Sint16 poY);
+void hitChek_mew_b(Sint16 posX, Sint16 posY, double poX, double poY);
+int hitChek_meb_b(Sint16 posX, Sint16 posY, double poX, double poY);
+//敵の関数
+void enemy_homing(Sint16 posx, Sint16 posy);
+void enemys_src(Sint16 posX, Sint16 posY);
+//像の関数
+void obj_src(Sint16 posX, Sint16 posY);
+void obj_main(Sint16 poX, Sint16 poY);
+void obj2_src(Sint16 posX, Sint16 posY);
+int hitChek_me_obj(Sint16 posX, Sint16 posY, Sint16 poX, Sint16 poY);
+void obj2_main(Sint16 poX, Sint16 poY);
+//ボスの関数
+void boss_homing(Sint16 posx, Sint16 posy);
+void boss_src(Sint16 posX, Sint16 posY);
+void boss_main(Sint16 posX, Sint16 posY);
+//特殊攻撃（弾）
+void me_bullet_main();
+void me_srcB(Sint16 posX, Sint16 posY);
+void me_bullet_north();
+void me_bullet_south();
+void me_bullet_east();
+void me_bullet_west();
+void me_bullet_north_move();
+void me_bullet_south_move();
+void me_bullet_east_move();
+void me_bullet_west_move();
+
+#define t_max 6
+#define img_max 26
+#define REC 48
+#define SIZE_Y 15
+#define SIZE_X 10
+#define PAI 3.1415926f
+#define txt_max 7
+#define bltMax 1
+#define M_max 7
+
+typedef struct
+{
+Uint32 now,//現在時間
+    wit,//待ち時間
+    lev;//経過時間
+}timers;
+extern timers timer;
+
+typedef struct//自機用の変数
+{
+  Sint16 posX,//自機の位置Ｘ
+    posY,//自機の位置Ｙ
+    flgB[bltMax],//弾のフラグ
+    bltX[bltMax],//弾のＸ座標
+    bltY[bltMax];//弾のＹ座標
+}ziki;
+extern ziki mes;
+
+typedef struct //敵用の変数
+{
+  Sint16 flg,cnt;//フラグ、再検出のカウンタ
+  double poX,poY,//現在地
+    moX,moY,//移動量
+    spd,rot,//スピードと弾の角度
+    tar;    //ターゲットの方向
+}enemy;
+extern enemy enemys;
+
+typedef struct //ボス用の変数                                                  
+{
+  Sint16 hp,cnt;//フラグ、再検出のカウンタ                                    
+  double poX,poY,//現在地                                                      
+    moX,moY,//移動量                                                           
+    spd,rot,//スピードと弾の角度                                             
+    tar;    //ターゲットの方向                                                 
+}bos;
+extern bos boss;
+
+
+typedef struct//罠
+{
+  Sint16 flg,
+    posX,
+    posY,
+    spd;
+}trap;
+extern trap traps[t_max];
+
+typedef struct//像の変数
+{
+  Sint16 posX,//像の位置Ｘ
+    posY,//像の位置Ｙ
+    hp;
+}zou;
+extern zou zous;
+
+typedef struct//像の変数
+{
+  Sint16 posX,//像の位置Ｘ
+    posY,//像の位置Ｙ
+    flg;
+}object;
+extern object obj;
+

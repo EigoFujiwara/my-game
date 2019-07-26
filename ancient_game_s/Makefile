@@ -1,0 +1,49 @@
+# コンパイルなどが記載されていませんが，
+# makeのデフォルト動作を使っています．
+#
+CC = gcc
+TEX = platex
+
+
+CFLAGS = -Wall -g $(COPTIONS)
+
+LDFLAGS = 
+LOADLIBES = 
+LDLIBS = -lm -lSDL -lSDL_mixer -lSDL_image -lSDL_ttf -Wl,-rpath,/usr/local/lib -lcwiimote -D_ENABLE_TILT -D_ENABLE_FORCE -L/usr/lib
+
+TARGET = main
+OBJS = $(TARGET).o others.o 
+HEADS = headers.h
+
+# 課題に取り組むにはこのターゲットで
+#   -g3 はデバッグ情報を埋め込むオプション
+#
+debug: CPPFLAGS = 
+debug: COPTIONS = -g3
+debug: $(TARGET)
+
+# デバッグ情報を埋め込まないターゲット
+#   -O3 は最適化オプション
+#
+release: CPPFLAGS = -DNDEBUG
+release: COPTIONS = -O3 
+release: $(TARGET)
+
+#
+$(TARGET): $(OBJS)
+$(OBJS): $(HEADS)
+
+# レポート作成用ターゲット
+# 例えば repo.tex があるとき，
+#  make repo.pdf でpdfまで生成する
+#
+%.pdf:%.dvi
+	dvipdfmx $<
+
+# コンパイルをやり直したい時などに，
+# 中間ファイルなどを削除するターゲット
+#   使用例： make clean
+#
+.PHONY: clean
+clean:
+	@rm -f $(TARGET) $(OBJS) core *~
